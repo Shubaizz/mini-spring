@@ -1,7 +1,8 @@
 package org.springframework.beans.factory.support;
 
+import cn.hutool.core.bean.BeanUtil;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.PropertyValue;
+import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanReference;
 
@@ -56,17 +57,20 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
                     BeanReference beanReference = (BeanReference) value;
                     value = getBean(beanReference.getBeanName());
                 }
-                // 通过属性的set方法设置属性
-                Class<?> type = beanClass.getDeclaredField(name).getType();
-                String methodName = "set" + name.substring(0, 1).toUpperCase() + name.substring(1);
-                Method method = beanClass.getDeclaredMethod(methodName, new Class[]{type});
-                method.invoke(bean, new Object[]{value});
+                //通过反射设置属性
+                BeanUtil.setFieldValue(bean, name, value);
             }
         }catch (Exception ex){
             throw new BeansException("Error setting property values for bean: " + beanName, ex);
         }
     }
 
+    /**
+     * 实例化bean
+     *
+     * @param beanDefinition
+     * @return
+     */
     protected Object createBeanInstance(BeanDefinition beanDefinition){
         return getInstantiationStrategy().instantiate(beanDefinition);
     }
