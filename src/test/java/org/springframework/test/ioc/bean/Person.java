@@ -1,5 +1,8 @@
 package org.springframework.test.ioc.bean;
 
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
+
 /**
  * ClassName: Person
  * Description:
@@ -8,7 +11,7 @@ package org.springframework.test.ioc.bean;
  * DateTime: 2025/9/18 15:28
  * Version: 1.0
  */
-public class Person {
+public class Person implements InitializingBean, DisposableBean {
 
     private String name;
 
@@ -47,5 +50,23 @@ public class Person {
                 ", age=" + age +
                 ", car=" + car +
                 '}';
+    }
+
+    public void customInitMethod() {
+        System.out.println("I was born in the method named customInitMethod");
+    }
+
+    public void customDestroyMethod() {
+        System.out.println("I died in the method named customDestroyMethod");
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        System.out.println("I died in the method named destroy");
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        System.out.println("I was born in the method named afterPropertiesSet");
     }
 }

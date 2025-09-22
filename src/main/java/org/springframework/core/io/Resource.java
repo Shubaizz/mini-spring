@@ -1,9 +1,7 @@
 package org.springframework.core.io;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 
 /**
  * ClassName: Resource
@@ -15,6 +13,7 @@ import java.net.URL;
  */
 public interface Resource {
 
+    // 获取资源的URL
     InputStream getInputStream() throws IOException;
 
 }
