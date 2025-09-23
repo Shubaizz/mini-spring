@@ -1,0 +1,16 @@
+package org.springframework.test.ioc.common.event;
+
+import org.springframework.context.ApplicationListener;
+
+/**
+ * @author derekyi
+ * @date 2020/12/5
+ */
+public class CustomEventListener implements ApplicationListener<CustomEvent> {
+
+	@Override
+	public void onApplicationEvent(CustomEvent event) {
+		System.out.println("收到：" + event.getSource() + "消息");
+		System.out.println(this.getClass().getName());
+	}
+}

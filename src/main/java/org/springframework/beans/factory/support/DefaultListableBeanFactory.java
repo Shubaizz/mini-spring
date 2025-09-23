@@ -66,5 +66,10 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
                 getBean(beanName);
             }
         });
+//        for (String beanName : beanDefinitionMap.keySet()){
+//            if (beanDefinitionMap.get(beanName).isSingleton()){
+//                getBean(beanName);
+//            }
+//        }
     }
 }
