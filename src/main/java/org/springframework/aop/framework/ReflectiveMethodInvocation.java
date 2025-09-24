@@ -7,7 +7,7 @@ import java.lang.reflect.Method;
 
 /**
  * ClassName: ReflectiveMethodInvocation
- * Description: 反射式的方法调用器
+ * Description: 反射的方法调用器
  * <p>
  * Author: shubaizz
  * DateTime: 2025/9/24 13:44
