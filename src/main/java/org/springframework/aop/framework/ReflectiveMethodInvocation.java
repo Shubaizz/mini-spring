@@ -16,13 +16,13 @@ import java.lang.reflect.Method;
 public class ReflectiveMethodInvocation implements MethodInvocation {
 
     // 目标对象（被调用方法所属的实例）
-    private final Object target;
+    protected final Object target;
 
     // 要调用的方法对象
-    private final Method method;
+    protected final Method method;
 
     // 方法调用时需要传递的参数数组
-    private final Object[] arguments;
+    protected final Object[] arguments;
 
     public ReflectiveMethodInvocation(Object target, Method method, Object[] arguments) {
         this.target = target;
@@ -43,6 +43,7 @@ public class ReflectiveMethodInvocation implements MethodInvocation {
     // 核心方法，通过反射调用目标方法
     @Override
     public Object proceed() throws Throwable {
+        // JDK的反射调用目标方法
         return method.invoke(target, arguments);
     }
 
