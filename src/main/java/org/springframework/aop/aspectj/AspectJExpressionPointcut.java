@@ -31,7 +31,10 @@ public class AspectJExpressionPointcut implements Pointcut, ClassFilter, MethodM
     private final PointcutExpression pointcutExpression;
 
     public AspectJExpressionPointcut(String expression) {
+        // 主要作用是解析 AOP 中的切点表达式
+        // SUPPORTED_PRIMITIVES：指定该解析器支持的切点类型集合 (这里仅验证execution类型)
         PointcutParser pointcutParser = PointcutParser.getPointcutParserSupportingSpecifiedPrimitivesAndUsingSpecifiedClassLoaderForResolution(SUPPORTED_PRIMITIVES, this.getClass().getClassLoader());
+        // 使用前面创建的PointcutParser实例解析字符串形式的切点表达式，生成可用于后续匹配操作的PointcutExpression对象
         pointcutExpression = pointcutParser.parsePointcutExpression(expression);
     }
 
@@ -47,11 +50,13 @@ public class AspectJExpressionPointcut implements Pointcut, ClassFilter, MethodM
 
     @Override
     public boolean matches(Class<?> clazz) {
+        // 用于判断当前切点表达式是否有可能匹配指定类（clazz）中的任何连接点（Join Point）
         return pointcutExpression.couldMatchJoinPointsInType(clazz);
     }
 
     @Override
     public boolean matches(Method method, Class<?> targetClass) {
+        // 用于精确判断某个方法是否完全匹配切点表达式的调用链
         return pointcutExpression.matchesMethodExecution(method).alwaysMatches();
     }
 }
