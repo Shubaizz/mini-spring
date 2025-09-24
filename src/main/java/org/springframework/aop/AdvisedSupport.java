@@ -12,12 +12,23 @@ import org.aopalliance.intercept.MethodInterceptor;
  */
 public class AdvisedSupport {
 
+    //是否使用cglib代理
+    private boolean proxyTargetClass = false;
+
     private TargetSource targetSource;
 
     // 方法拦截器，包含了要织入目标方法的横切逻辑（如前置、后置、环绕通知等）
     private MethodInterceptor methodInterceptor;
 
     private MethodMatcher methodMatcher;
+
+    public boolean isProxyTargetClass() {
+        return proxyTargetClass;
+    }
+
+    public void setProxyTargetClass(boolean proxyTargetClass) {
+        this.proxyTargetClass = proxyTargetClass;
+    }
 
     public TargetSource getTargetSource() {
         return targetSource;
