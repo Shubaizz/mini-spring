@@ -14,4 +14,6 @@
 	<bean class="org.springframework.test.ioc.common.event.ContextClosedEventListener"/>
 
 	<bean class="org.springframework.test.ioc.common.event.HelloEventListener"/>
+
+	<bean class="org.springframework.test.ioc.common.event.HelloEventPublisher"/>
 </beans>

@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.ioc.common.event.CustomEvent;
 import org.springframework.test.ioc.common.event.HelloEvent;
+import org.springframework.test.ioc.common.event.HelloEventPublisher;
 
 /**
  * @author derekyi
@@ -20,5 +21,8 @@ public class EventAndEventListenerTest {
 		System.out.println("Publishing context...");
 		applicationContext.publishEvent(new HelloEvent("hello"));
 		applicationContext.registerShutdownHook();//或者applicationContext.close()主动关闭容器;
+
+		HelloEventPublisher helloEventPublisher = applicationContext.getBean("helloEventPublisher", HelloEventPublisher.class);
+		helloEventPublisher.publishEvent("hello me");
 	}
 }
