@@ -13,5 +13,4 @@ import java.lang.reflect.Method;
  * Version: 1.0
  */
 public interface ThrowsAdvice extends Advice {
-    void throwsHandle(Throwable throwable, Method method, Object[] args, Object target);
 }

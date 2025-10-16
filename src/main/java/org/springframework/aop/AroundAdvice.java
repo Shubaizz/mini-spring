@@ -1,5 +1,6 @@
 package org.springframework.aop;
 
+import org.aopalliance.aop.Advice;
 import org.aopalliance.intercept.MethodInvocation;
 
 /**
@@ -10,6 +11,5 @@ import org.aopalliance.intercept.MethodInvocation;
  * DateTime: 2025/9/24 15:08
  * Version: 1.0
  */
-public interface AroundAdvice {
-    Object around(MethodInvocation invocation) throws Throwable;
+public interface AroundAdvice extends Advice {
 }

@@ -2,12 +2,13 @@ package org.springframework.test.common;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.aop.AroundAdvice;
+import org.springframework.aop.MethodAroundAdvice;
 
 /**
  * @author NingMao
  * @since 2025-07-12
  */
-public class WorldServiceAroundAdvice implements AroundAdvice {
+public class WorldServiceAroundAdvice implements MethodAroundAdvice {
     @Override
     public Object around(MethodInvocation invocation) throws Throwable {
         System.out.println("--- 环绕通知：方法执行前操作 ---");

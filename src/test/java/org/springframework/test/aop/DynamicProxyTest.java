@@ -9,7 +9,7 @@ import org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor;
 import org.springframework.aop.framework.CglibAopProxy;
 import org.springframework.aop.framework.JdkDynamicAopProxy;
 import org.springframework.aop.framework.ProxyFactory;
-import org.springframework.aop.framework.adapter.MethodBeforeAdviceInterceptor;
+import org.springframework.aop.framework.adapter.*;
 import org.springframework.test.common.*;
 import org.springframework.test.service.WorldService;
 import org.springframework.test.service.WorldServiceImpl;
@@ -74,14 +74,11 @@ public class DynamicProxyTest {
 
     @Test
     public void testBeforeAdvice() throws Exception {
-        //设置BeforeAdvice
         WorldServiceBeforeAdvice beforeAdvice = new WorldServiceBeforeAdvice();
-        GenericInterceptor methodInterceptor = new GenericInterceptor();
-        methodInterceptor.setBeforeAdvice(beforeAdvice);
+        MethodBeforeAdviceInterceptor methodInterceptor = new MethodBeforeAdviceInterceptor(beforeAdvice);
         advisedSupport.setMethodInterceptor(methodInterceptor);
 
         WorldService proxy = (WorldService) new ProxyFactory(advisedSupport).getProxy();
-        System.out.println(proxy.getClass());
         proxy.explode();
     }
 
@@ -89,8 +86,8 @@ public class DynamicProxyTest {
     public void testAfterAdvice() throws Exception {
         //设置AfterAdvice
         WorldServiceAfterAdvice afterAdvice = new WorldServiceAfterAdvice();
-        GenericInterceptor methodInterceptor = new GenericInterceptor();
-        methodInterceptor.setAfterAdvice(afterAdvice);
+        CombineAdviceInterceptor methodInterceptor = new CombineAdviceInterceptor();
+        methodInterceptor.setAfterAdviceInterceptor(new MethodAfterAdviceInterceptor(afterAdvice));
         advisedSupport.setMethodInterceptor(methodInterceptor);
         advisedSupport.setProxyTargetClass(true);
 
@@ -103,8 +100,8 @@ public class DynamicProxyTest {
     public void testAfterReturningAdvice() throws Exception {
         //设置AfterReturningAdvice
         WorldServiceAfterReturningAdvice afterReturningAdvice = new WorldServiceAfterReturningAdvice();
-        GenericInterceptor methodInterceptor = new GenericInterceptor();
-        methodInterceptor.setAfterReturningAdvice(afterReturningAdvice);
+        CombineAdviceInterceptor methodInterceptor = new CombineAdviceInterceptor();
+        methodInterceptor.setAfterReturningAdviceInterceptor(new MethodAfterReturningAdviceInterceptor(afterReturningAdvice));
         advisedSupport.setMethodInterceptor(methodInterceptor);
 
         WorldService proxy = (WorldService) new ProxyFactory(advisedSupport).getProxy();
@@ -116,8 +113,8 @@ public class DynamicProxyTest {
         WorldService worldService = new WorldServiceWithExceptionImpl();
         //设置ThrowsAdvice
         WorldServiceThrowsAdvice throwsAdvice = new WorldServiceThrowsAdvice();
-        GenericInterceptor methodInterceptor = new GenericInterceptor();
-        methodInterceptor.setThrowsAdvice( throwsAdvice);
+        CombineAdviceInterceptor methodInterceptor = new CombineAdviceInterceptor();
+        methodInterceptor.setThrowsAdviceInterceptor(new MethodThrowsAdviceInterceptor(throwsAdvice));
         advisedSupport.setMethodInterceptor(methodInterceptor);
         advisedSupport.setTargetSource(new TargetSource(worldService));
 
@@ -128,10 +125,10 @@ public class DynamicProxyTest {
     @Test
     public void testAllAdvice() throws Exception {
         //设置before、after、afterReturning
-        GenericInterceptor methodInterceptor = new GenericInterceptor();
-        methodInterceptor.setBeforeAdvice(new WorldServiceBeforeAdvice());
-        methodInterceptor.setAfterAdvice(new WorldServiceAfterAdvice());
-        methodInterceptor.setAfterReturningAdvice(new WorldServiceAfterReturningAdvice());
+        CombineAdviceInterceptor methodInterceptor = new CombineAdviceInterceptor();
+        methodInterceptor.setBeforeAdviceInterceptor(new MethodBeforeAdviceInterceptor(new WorldServiceBeforeAdvice()));
+        methodInterceptor.setAfterAdviceInterceptor(new MethodAfterAdviceInterceptor(new WorldServiceAfterAdvice()));
+        methodInterceptor.setAfterReturningAdviceInterceptor(new MethodAfterReturningAdviceInterceptor(new WorldServiceAfterReturningAdvice()));
         advisedSupport.setMethodInterceptor(methodInterceptor);
 
         WorldService proxy = (WorldService) new ProxyFactory(advisedSupport).getProxy();
@@ -142,10 +139,10 @@ public class DynamicProxyTest {
     public void testAllAdviceWithException() throws Exception {
         WorldService worldService = new WorldServiceWithExceptionImpl();
         //设置before、after、throws
-        GenericInterceptor methodInterceptor = new GenericInterceptor();
-        methodInterceptor.setBeforeAdvice(new WorldServiceBeforeAdvice());
-        methodInterceptor.setAfterAdvice(new WorldServiceAfterAdvice());
-        methodInterceptor.setThrowsAdvice(new WorldServiceThrowsAdvice());
+        CombineAdviceInterceptor methodInterceptor = new CombineAdviceInterceptor();
+        methodInterceptor.setBeforeAdviceInterceptor(new MethodBeforeAdviceInterceptor(new WorldServiceBeforeAdvice()));
+        methodInterceptor.setAfterAdviceInterceptor(new MethodAfterAdviceInterceptor(new WorldServiceAfterAdvice()));
+        methodInterceptor.setThrowsAdviceInterceptor(new MethodThrowsAdviceInterceptor(new WorldServiceThrowsAdvice()));
         advisedSupport.setMethodInterceptor(methodInterceptor);
         advisedSupport.setTargetSource(new TargetSource(worldService));
 
@@ -156,8 +153,7 @@ public class DynamicProxyTest {
     @Test
     public void testAroundAdvice() throws Exception {
         WorldServiceAroundAdvice aroundAdvice = new WorldServiceAroundAdvice();
-        GenericInterceptor methodInterceptor = new GenericInterceptor();
-        methodInterceptor.setAroundAdvice(aroundAdvice);
+        MethodAroundAdviceInterceptor methodInterceptor = new MethodAroundAdviceInterceptor(aroundAdvice);
         advisedSupport.setMethodInterceptor(methodInterceptor);
         WorldService proxy = (WorldService) new ProxyFactory(advisedSupport).getProxy();
         proxy.explode();
@@ -171,8 +167,7 @@ public class DynamicProxyTest {
         String expression = "execution(* org.springframework.test.service.WorldService.explode(..))";
         AspectJExpressionPointcutAdvisor advisor = new AspectJExpressionPointcutAdvisor();
         advisor.setExpression(expression);
-        GenericInterceptor methodInterceptor = new GenericInterceptor();
-        methodInterceptor.setBeforeAdvice(new WorldServiceBeforeAdvice());
+        MethodBeforeAdviceInterceptor methodInterceptor = new MethodBeforeAdviceInterceptor(new WorldServiceBeforeAdvice());
         advisor.setAdvice(methodInterceptor);
 
         ClassFilter classFilter = advisor.getPointcut().getClassFilter();

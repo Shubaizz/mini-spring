@@ -1,5 +1,6 @@
 package org.springframework.test.common;
 
+import org.springframework.aop.MethodThrowsAdvice;
 import org.springframework.aop.ThrowsAdvice;
 
 import java.lang.reflect.Method;
@@ -8,7 +9,7 @@ import java.lang.reflect.Method;
  * @author derekyi
  * @date 2020/12/6
  */
-public class WorldServiceThrowsAdvice implements ThrowsAdvice {
+public class WorldServiceThrowsAdvice implements MethodThrowsAdvice {
 
     @Override
     public void throwsHandle(Throwable throwable, Method method, Object[] args, Object target) {

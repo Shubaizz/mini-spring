@@ -2,7 +2,7 @@ package org.springframework.aop.framework.adapter;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-import org.springframework.aop.BeforeAdvice;
+import org.springframework.aop.MethodBeforeAdvice;
 
 /**
  * ClassName: MethodBeforeAdviceInterceptor
@@ -14,16 +14,16 @@ import org.springframework.aop.BeforeAdvice;
  */
 public class MethodBeforeAdviceInterceptor implements MethodInterceptor {
 
-    private BeforeAdvice advice;
+    private MethodBeforeAdvice advice;
 
     public MethodBeforeAdviceInterceptor() {
     }
 
-    public MethodBeforeAdviceInterceptor(BeforeAdvice advice) {
+    public MethodBeforeAdviceInterceptor(MethodBeforeAdvice advice) {
         this.advice = advice;
     }
 
-    public void setAdvice(BeforeAdvice advice) {
+    public void setAdvice(MethodBeforeAdvice advice) {
         this.advice = advice;
     }
 

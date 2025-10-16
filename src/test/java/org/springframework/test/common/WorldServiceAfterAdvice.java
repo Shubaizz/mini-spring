@@ -1,6 +1,7 @@
 package org.springframework.test.common;
 
 import org.springframework.aop.AfterAdvice;
+import org.springframework.aop.MethodAfterAdvice;
 
 import java.lang.reflect.Method;
 
@@ -8,7 +9,7 @@ import java.lang.reflect.Method;
  * @author derekyi
  * @date 2020/12/6
  */
-public class WorldServiceAfterAdvice implements AfterAdvice {
+public class WorldServiceAfterAdvice implements MethodAfterAdvice {
 
     @Override
     public void after(Method method, Object[] args, Object target) throws Throwable {
