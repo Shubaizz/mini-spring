@@ -15,4 +15,8 @@ public class WorldServiceWithExceptionImpl implements WorldService{
         System.out.println("The Earth is going to explode with an Exception");
         throw new RuntimeException();
     }
+
+    public void doSomething() {
+        System.out.println("do something");
+    }
 }

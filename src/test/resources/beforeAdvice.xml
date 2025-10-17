@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	         http://www.springframework.org/schema/beans/spring-beans.xsd
+		 http://www.springframework.org/schema/context
+		 http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+	<bean id="worldService" class="org.springframework.test.service.WorldServiceImpl"/>
+
+	<!-- 自动代理创建器 -->
+	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
+
+	<!-- 通知器（定义切点 + 通知） -->
+	<bean id="pointcutAdvisor" class="org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor">
+		<property name="expression" value="execution(* org.springframework.test.service.WorldService.explode(..))"/>
+		<property name="advice" ref="methodBeforeAdviceInterceptor"/>
+	</bean>
+
+	<bean id="methodAfterAdviceInterceptor" class="org.springframework.aop.framework.adapter.MethodAfterAdviceInterceptor">
+		<property name="advice" ref="afterAdvice"/>
+	</bean>
+	<bean id="afterAdvice" class="org.springframework.test.common.WorldServiceAfterAdvice"/>
+
+	<bean id="methodBeforeAdviceInterceptor" class="org.springframework.aop.framework.adapter.MethodBeforeAdviceInterceptor">
+		<property name="advice" ref="beforeAdvice"/>
+	</bean>
+	<bean id="beforeAdvice" class="org.springframework.test.common.WorldServiceBeforeAdvice"/>
+</beans>

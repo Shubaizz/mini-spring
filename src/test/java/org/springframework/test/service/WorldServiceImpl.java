@@ -14,4 +14,9 @@ public class WorldServiceImpl implements WorldService{
     public void explode() {
         System.out.println("The Earth is going to explode");
     }
+
+    @Override
+    public void doSomething() {
+        System.out.println("do something");
+    }
 }

@@ -10,6 +10,7 @@ import org.springframework.aop.framework.CglibAopProxy;
 import org.springframework.aop.framework.JdkDynamicAopProxy;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.aop.framework.adapter.*;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.common.*;
 import org.springframework.test.service.WorldService;
 import org.springframework.test.service.WorldServiceImpl;
@@ -74,12 +75,45 @@ public class DynamicProxyTest {
 
     @Test
     public void testBeforeAdvice() throws Exception {
-        WorldServiceBeforeAdvice beforeAdvice = new WorldServiceBeforeAdvice();
-        MethodBeforeAdviceInterceptor methodInterceptor = new MethodBeforeAdviceInterceptor(beforeAdvice);
-        advisedSupport.setMethodInterceptor(methodInterceptor);
+        AdvisedSupport support = new AdvisedSupport();
 
-        WorldService proxy = (WorldService) new ProxyFactory(advisedSupport).getProxy();
+        // 目标对象
+        WorldService worldService = new WorldServiceImpl();
+        TargetSource targetSource = new TargetSource(worldService);
+
+        // 拦截器(通知)
+        WorldServiceBeforeAdvice worldServiceBeforeAdvice = new WorldServiceBeforeAdvice();
+        MethodBeforeAdviceInterceptor methodInterceptor = new MethodBeforeAdviceInterceptor(worldServiceBeforeAdvice);
+
+        // 切面
+        MethodMatcher methodMatcher = new AspectJExpressionPointcut("execution(* org.springframework.test.service.WorldService.explode(..))").getMethodMatcher();
+
+        support.setTargetSource(targetSource);
+        support.setMethodInterceptor(methodInterceptor);
+        support.setMethodMatcher(methodMatcher);
+
+        WorldService proxy = (WorldService) new ProxyFactory(support).getProxy();
+        System.out.println(proxy.getClass());
         proxy.explode();
+
+        AspectJExpressionPointcutAdvisor aspectJExpressionPointcutAdvisor = new AspectJExpressionPointcutAdvisor() ;
+        aspectJExpressionPointcutAdvisor.setExpression("execution(* org.springframework.test.service.WorldService.explode(..))");
+
+        AdvisedSupport support2 = new AdvisedSupport();
+        support2.setTargetSource(targetSource);
+        support2.setMethodInterceptor(methodInterceptor);
+        support2.setMethodMatcher(aspectJExpressionPointcutAdvisor.getPointcut().getMethodMatcher());
+        support2.setProxyTargetClass(true);
+        WorldService proxy2 = (WorldService) new ProxyFactory(support2).getProxy();
+        System.out.println(proxy2.getClass());
+        proxy2.explode();
+
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("classpath:beforeAdvice.xml");
+        WorldService proxy3 = (WorldService) context.getBean("worldService");
+        System.out.println(proxy3.getClass());
+        proxy3.explode();
+
+        proxy3.doSomething();
     }
 
     @Test
