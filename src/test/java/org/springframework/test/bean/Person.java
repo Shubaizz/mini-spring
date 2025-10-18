@@ -3,6 +3,7 @@ package org.springframework.test.bean;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.stereotype.Component;
 
 /**
@@ -16,12 +17,14 @@ import org.springframework.context.stereotype.Component;
 @Component
 public class Person implements InitializingBean, DisposableBean {
 
+    @Value("shubai")
     private String name;
 
+    @Value("18")
     private int age;
 
     @Autowired
-    private Car car;
+    private Car car ;
 
     public String getName() {
         return name;
