@@ -19,4 +19,9 @@ public class WorldServiceWithExceptionImpl implements WorldService{
     public void doSomething() {
         System.out.println("do something");
     }
+
+    @Override
+    public String getName() {
+        return "";
+    }
 }

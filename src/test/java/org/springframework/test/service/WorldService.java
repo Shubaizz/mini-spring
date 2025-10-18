@@ -13,4 +13,6 @@ public interface WorldService {
     void explode();
 
     void doSomething();
+
+    public String getName() ;
 }

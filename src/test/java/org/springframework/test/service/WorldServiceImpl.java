@@ -1,5 +1,8 @@
 package org.springframework.test.service;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.stereotype.Component;
+
 /**
  * ClassName: WorldServiceImpl
  * Description:
@@ -8,11 +11,23 @@ package org.springframework.test.service;
  * DateTime: 2025/9/24 13:56
  * Version: 1.0
  */
+@Component
 public class WorldServiceImpl implements WorldService{
+
+    @Value("hello")
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     @Override
     public void explode() {
-        System.out.println("The Earth is going to explode");
+        System.out.println("The "+ name +" is going to explode");
     }
 
     @Override
