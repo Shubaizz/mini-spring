@@ -6,6 +6,7 @@
 	         http://www.springframework.org/schema/beans/spring-beans.xsd
 		 http://www.springframework.org/schema/context
 		 http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
 	<context:component-scan base-package="org.springframework.test.service"/>
 
 	<!-- 自动代理创建器 -->
@@ -42,7 +43,9 @@
 	</bean>
 	<bean id="afterReturningAdvice" class="org.springframework.test.common.WorldServiceAfterReturningAdvice"/>
 
-
+	<bean class="org.springframework.beans.factory.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:car.properties" />
+	</bean>
 	<bean id="methodThrowsAdviceInterceptor" class="org.springframework.aop.framework.adapter.MethodThrowsAdviceInterceptor">
 		<property name="advice" ref="throwsAdvice"/>
 	</bean>

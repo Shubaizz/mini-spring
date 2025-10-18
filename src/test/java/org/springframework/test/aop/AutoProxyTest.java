@@ -30,5 +30,7 @@ public class AutoProxyTest {
         WorldService worldService = applicationContext.getBean(WorldService.class);
         worldService.explode();
         System.out.println(worldService.getName());
+
+        worldService.doSomethingElse();
     }
 }

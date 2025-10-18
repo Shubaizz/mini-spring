@@ -24,4 +24,9 @@ public class WorldServiceWithExceptionImpl implements WorldService{
     public String getName() {
         return "";
     }
+
+    @Override
+    public void doSomethingElse() {
+
+    }
 }

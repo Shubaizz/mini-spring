@@ -15,6 +15,7 @@ public interface InstantiationAwareBeanPostProcessor extends BeanPostProcessor{
 
     /**
      * 在bean实例化之前执行
+     * 可以返回一个自定义的 bean 实例，直接替代 Spring 默认的实例化过程。如果返回非null值，Spring 会终止后续的实例化流程
      *
      * @param beanClass
      * @param beanName
@@ -25,6 +26,7 @@ public interface InstantiationAwareBeanPostProcessor extends BeanPostProcessor{
 
     /**
      * bean实例化之后，设置属性之前执行
+     * 返回boolean值，false表示阻止后续的属性注入（即 Spring 不再为该 bean 设置属性），true表示允许继续注入。
      *
      * @param bean
      * @param beanName

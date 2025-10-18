@@ -1,5 +1,6 @@
 package org.springframework.test.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.stereotype.Component;
 
@@ -14,8 +15,11 @@ import org.springframework.context.stereotype.Component;
 @Component
 public class WorldServiceImpl implements WorldService{
 
-    @Value("hello")
+    @Value("${brand}")
     private String name;
+
+    @Autowired
+    private MyService myService;
 
     public String getName() {
         return name;
@@ -33,5 +37,9 @@ public class WorldServiceImpl implements WorldService{
     @Override
     public void doSomething() {
         System.out.println("do something");
+    }
+
+    public void doSomethingElse() {
+        myService.doSomething();
     }
 }

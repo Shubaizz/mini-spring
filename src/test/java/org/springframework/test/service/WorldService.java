@@ -15,4 +15,6 @@ public interface WorldService {
     void doSomething();
 
     public String getName() ;
+
+    public void doSomethingElse();
 }
