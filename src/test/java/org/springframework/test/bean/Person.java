@@ -2,6 +2,8 @@ package org.springframework.test.bean;
 
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.stereotype.Component;
 
 /**
  * ClassName: Person
@@ -11,12 +13,14 @@ import org.springframework.beans.factory.InitializingBean;
  * DateTime: 2025/9/18 15:28
  * Version: 1.0
  */
+@Component
 public class Person implements InitializingBean, DisposableBean {
 
     private String name;
 
     private int age;
 
+    @Autowired
     private Car car;
 
     public String getName() {
